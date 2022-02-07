@@ -1,0 +1,30 @@
+# vim: set ft=Ansible ts=2
+
+
+- name: Install SSH server
+  package:
+    name: "{{ jpclipffel_system_sshd_package }}"
+    state: present
+  tags: [never, setup]
+
+- name: Install SSH server host keys
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ jpclipffel_system_sshd_config_root + '/' + item.name }}"
+    mode: 0600
+  with_items: "{{ jpclipffel_system_sshd_host_keys_files }}"
+  tags: [never, setup]
+
+- name: Install SSH server configuration
+  template:
+    src: templates/sshd_config.j2
+    dest: "{{ jpclipffel_system_sshd_config_file }}"
+    mode: 0644
+  tags: [never, setup]
+
+- name: Enable and restart SSH server service
+  service:
+    name: "{{ jpclipffel_system_sshd_service }}"
+    state: restarted
+    enabled: yes
+  tags: [never, setup]

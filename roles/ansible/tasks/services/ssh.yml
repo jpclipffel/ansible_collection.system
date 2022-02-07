@@ -1,0 +1,126 @@
+# code: language=Ansible insertSpaces=true tabSize=2
+
+
+- name: Setup public keys
+  block:
+
+    - name: Get Ansible user account path
+      shell: |
+        getent passwd {{ jpclipffel_system_ansible_user_name }} | awk -F: '{ print $6 }'
+      register: _saun
+      changed_when: false
+      tags: [never, setup, teardown, remove]
+
+    - name: Backup authorized keys file
+      copy:
+        src: "{{ _saun.stdout }}/.ssh/authorized_keys"
+        dest: "{{ _saun.stdout }}/.ssh/authorized_keys.bak"
+        remote_src: true
+        mode: 0644
+      when:
+        - "_saun.stdout | length > 0"
+      tags: [never, setup, teardown, remove]
+
+    - name: Void authorized keys file
+      shell: |
+        echo -n > "{{ _saun.stdout }}/.ssh/authorized_keys"
+      when:
+        - "_saun.stdout | length > 0"
+        -    jpclipffel_system_ansible_public_keys_files | length > 2
+          or jpclipffel_system_ansible_public_keys | length > 2
+          or jpclipffel_system_ansible_public_keys_git | length > 2
+      tags: [never, setup, teardown, remove]
+
+    # ---
+
+    - name: Install Ansible user public keys (from file)
+      ansible.posix.authorized_key:
+        user: "{{ jpclipffel_system_ansible_user_name }}"
+        key: "{{ lookup('file', _aupkf_item) }}"
+        state: present
+      loop: "{{ jpclipffel_system_ansible_public_keys_files }}"
+      loop_control:
+        loop_var: _aupkf_item
+      tags: [never, setup]
+
+    - name: Install Ansible user public keys (from variable)
+      ansible.posix.authorized_key:
+        user: "{{ jpclipffel_system_ansible_user_name }}"
+        key: "{{ lookup('file', _aupkv_item) }}"
+        state: present
+      loop: "{{ jpclipffel_system_ansible_public_keys }}"
+      loop_control:
+        loop_var: _aupkv_item
+      tags: [never, setup]
+
+    - name: Create Ansible user public keys temporary directory (from Git)
+      tempfile:
+        state: directory
+      register: _keysdir
+      delegate_to: localhost
+      tags: [never, setup]
+
+    - name: Download Ansible user public keys (from Git)
+      get_url:
+        url: "{{ _sapkg_item.0.url }}/{{ _sapkg_item.1 }}.keys"
+        dest: "{{ _keysdir.path }}/{{ _sapkg_item.1 }}.keys"
+        validate_certs: false
+      loop: "{{ jpclipffel_system_ansible_public_keys_git | subelements('users') }}"
+      loop_control:
+        loop_var: _sapkg_item
+      ignore_errors: true
+      delegate_to: localhost
+      tags: [never, setup, skip_ansible_lint]
+
+    - name: Install Ansible user public keys (from Git)
+      ansible.posix.authorized_key:
+        user: "{{ jpclipffel_system_ansible_user_name }}"
+        key: "{{ lookup('file', _keysdir.path + '/' + _sapkg_item.1 + '.keys') }}"
+      loop: "{{ jpclipffel_system_ansible_public_keys_git | subelements('users') }}"
+      loop_control:
+        loop_var: _sapkg_item
+      ignore_errors: true
+      tags: [never, setup, skip_ansible_lint]
+
+    - name: Cleanup Ansible user public keys temporary directory (from Git)
+      file:
+        path: "{{ _keysdir.path }}"
+        state: absent
+      delegate_to: localhost
+      tags: [never, setup]
+
+    # ---
+
+    - name: Remove Ansible user public keys (from file)
+      ansible.posix.authorized_key:
+        user: "{{ jpclipffel_system_ansible_user_name }}"
+        key: "{{ lookup('file', _aupkf_item) }}"
+        state: absent
+      loop: "{{ jpclipffel_system_ansible_public_keys_files }}"
+      loop_control:
+        loop_var: _aupkf_item
+      tags: [never, teardown, remove]
+
+    - name: Remove Ansible user public keys (from variable)
+      ansible.posix.authorized_key:
+        user: "{{ jpclipffel_system_ansible_user_name }}"
+        key: "{{ lookup('file', _aupkv_item) }}"
+        state: absent
+      loop: "{{ jpclipffel_system_ansible_public_keys }}"
+      loop_control:
+        loop_var: _aupkv_item
+      tags: [never, teardown, remove]
+
+    # ---
+
+  rescue:
+    - name: Reset authorized keys file
+      copy:
+        src: "{{ _saun.stdout }}/.ssh/authorized_keys.bak"
+        dest: "{{ _saun.stdout }}/.ssh/authorized_keys"
+        remote_src: true
+        mode: 0644
+
+    - name: Stop
+      fail:
+        msg: "Error encountered when setting-up SSH for Ansible user account"

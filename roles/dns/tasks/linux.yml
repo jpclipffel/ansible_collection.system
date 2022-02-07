@@ -1,0 +1,75 @@
+- name: Setup resolv.conf
+  block:
+
+    - name: Stop and disable systemd-resolved
+      service:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
+
+    - name: Remove existing resolv.conf
+      file:
+        path: "{{ jpclipffel_system_dns_resolvconf_file }}"
+        state: absent
+
+    - name: Template resolv.conf
+      template:
+        src: resolv.conf.j2
+        dest: "{{ jpclipffel_system_dns_resolvconf_file }}"
+        mode: 0644
+
+    # - name: Remove unmanaged systemd-resolved resolv.conf
+    #   file:
+    #     path: /run/systemd/resolve/resolv.conf
+    #     state: absent
+
+    # - name: Creating fake systemd-resolved run directory
+    #   file:
+    #     path: /run/systemd/resolve
+    #     state: directory
+
+    # - name: Link systemd-resolved/resolv.conf -> etc/resolv.conf
+    #   file:
+    #     path: /run/systemd/resolve/resolv.conf
+    #     src: /etc/resolv.conf
+    #     state: link
+
+  when:
+    - jpclipffel_system_dns_resolver == "resolv.conf"
+  tags: [never, setup]
+
+
+- name: Setup systemd-resolved
+  block:
+
+    - name: Create systemd-resolved configuration directory
+      file:
+        path: "{{ jpclipffel_system_dns_resolved_root }}"
+        state: directory
+    
+    - name: Template systemd-resolved configuration
+      template:
+        src: systemd-resolved.conf.j2
+        dest: "{{ jpclipffel_system_dns_resolved_file }}"
+        mode: 0644
+
+    - name: Start and enabled systemd-resolved
+      service:
+        name: systemd-resolved
+        state: restarted
+        enabled: yes
+
+    - name: Remove existing resolv.conf
+      file:
+        path: "{{ jpclipffel_system_dns_resolvconf_file }}"
+        state: absent
+
+    - name: Symlink resolv.conf to systemd-resolved stub
+      file:
+        path: "{{ jpclipffel_system_dns_resolvconf_file }}"
+        state: link
+        src: "{{ jpclipffel_system_dns_resolved_stub }}"
+        
+  when:
+    - jpclipffel_system_dns_resolver == "systemd-resolved"
+  tags: [never, setup]

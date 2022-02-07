@@ -1,0 +1,20 @@
+# vim: set ft=Ansible ts=2
+
+
+# DNS resolution type:
+# * 'resolv.conf': Use standard '/etc/resolv.conf' file
+# * 'systemd-resolved': Use 'systemd-resovled' service
+jpclipffel_system_dns_resolver: "systemd-resolved"
+
+# DNS servers, options and search domains
+jpclipffel_system_dns_servers: []
+jpclipffel_system_dns_options: []
+jpclipffel_system_dns_domains: []
+
+# Legacy resolv.conf paths
+jpclipffel_system_dns_resolvconf_file: "/etc/resolv.conf"
+
+# systemd-resolved paths
+jpclipffel_system_dns_resolved_root: "/etc/systemd/resolved.conf.d"
+jpclipffel_system_dns_resolved_file: "{{ jpclipffel_system_dns_resolved_root }}/systemd-resolved.conf"
+jpclipffel_system_dns_resolved_stub: "/run/systemd/resolve/stub-resolv.conf"

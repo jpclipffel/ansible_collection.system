@@ -1,0 +1,25 @@
+# Ansible user account name and comment
+jpclipffel_system_ansible_user_name: "ansctl"
+jpclipffel_system_ansible_user_comment: "Ansible user account"
+
+# Lock Ansible user account password
+jpclipffel_system_ansible_user_pwdlock: true
+
+# Sudoers file
+jpclipffel_system_ansible_sudoers_file: "/etc/sudoers.d/{{ jpclipffel_system_ansible_user_name }}"
+
+# Ansible's user account public keys files
+jpclipffel_system_ansible_public_keys_files: []
+
+# Ansible's user account public keys (content)
+jpclipffel_system_ansible_public_keys: []
+
+# Git servers and users public key references
+# Syntax:
+# jpclipffel_system_ansible_public_keys_git:
+#   - url: https://gitserver.tld
+#     users: [username, otheruser]
+jpclipffel_system_ansible_public_keys_git: []
+
+# Python's PIP executable
+jpclipffel_system_ansible_pip: "python3-pip"

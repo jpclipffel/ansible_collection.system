@@ -1,0 +1,22 @@
+# THIS FILE IS GENERATED AND MAINTAINED BY ANSIBLE.
+# DO NOT DELETE, RENAME OR CHANGE THIS FILE.
+#
+# --- Ansible log ---
+# Generation role: {{ role_name }}
+# Generation date: {{ ansible_date_time.iso8601 }}
+# ---
+
+# Options
+{% for option in jpclipffel_system_dns_options | default([]) %}
+options {{ option }}
+{% endfor %}
+
+# Namservers
+{% for nameserver in jpclipffel_system_dns_servers | default([]) %}
+nameserver {{ nameserver }}
+{% endfor %}
+
+# Search domains
+{% for domain in jpclipffel_system_dns_domains | default([]) %}
+search {{ domain }}
+{% endfor %}

@@ -1,0 +1,33 @@
+# THIS FILE IS GENERATED AND MAINTAINED BY ANSIBLE.
+# DO NOT DELETE, RENAME OR CHANGE THIS FILE.
+#
+# --- Ansible log ---
+# Generation role: {{ role_name }}
+# Generation date: {{ ansible_date_time.iso8601 }}
+# ---
+
+# Network
+{% for port in jpclipffel_system_sshd_ports %}
+Port {{ port }}
+{% endfor %}
+
+# Host identity
+{% for item in jpclipffel_system_sshd_host_keys_files %}
+{% if item.name | default('') | length > 0 %}
+HostKey {{ jpclipffel_system_sshd_config_root + '/' + item.name }}
+{% endif %}
+{% endfor %}
+
+# Authentication
+PermitRootLogin no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+
+# Misc
+AllowAgentForwarding yes
+AllowTcpForwarding yes
+AcceptEnv LANG LC_*
+Subsystem sftp /usr/lib/openssh/sftp-server

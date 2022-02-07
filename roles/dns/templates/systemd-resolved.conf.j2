@@ -1,0 +1,15 @@
+# THIS FILE IS GENERATED AND MAINTAINED BY ANSIBLE.
+# DO NOT DELETE, RENAME OR CHANGE THIS FILE.
+#
+# --- Ansible log ---
+# Generation role: {{ role_name }}
+# Generation date: {{ ansible_date_time.iso8601 }}
+# ---
+
+[Resolve]
+{% if jpclipffel_system_dns_servers | default([]) | length > 0 %}
+DNS={{ jpclipffel_system_dns_servers | join(" ") }}
+{% endif %}
+{% if jpclipffel_system_dns_domains | default([]) | length > 0 %}
+Domains={{ jpclipffel_system_dns_domains | join(" ") }}
+{% endif %}

@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Jean-Philippe Clipffel
+  description: Configure hosts local DNS resolution
+  min_ansible_version: 2.0
+  platforms:
+    - name: Ubuntu
+      versions: [all]
+    - name: Debian
+      version: [all]
+  galaxy_tags:
+    - system
+    - dns
