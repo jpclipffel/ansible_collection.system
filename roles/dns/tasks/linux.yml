@@ -5,7 +5,7 @@
       service:
         name: "systemd-resolved"
         state: stopped
-        enabled: no
+        enabled: false
 
     - name: Remove existing resolv.conf
       file:
@@ -46,7 +46,8 @@
       file:
         path: "{{ jpclipffel_system_dns_resolved_root }}"
         state: directory
-    
+        mode: 0755
+
     - name: Template systemd-resolved configuration
       template:
         src: "systemd-resolved.ansible.conf.j2"
@@ -57,7 +58,7 @@
       service:
         name: "systemd-resolved"
         state: restarted
-        enabled: yes
+        enabled: true
 
     - name: Remove existing resolv.conf
       file:
@@ -69,7 +70,7 @@
         path: "{{ jpclipffel_system_dns_resolvconf_file }}"
         state: link
         src: "{{ jpclipffel_system_dns_resolved_stub }}"
-        
+
   when:
     - jpclipffel_system_dns_resolver == "systemd-resolved"
   tags: [never, setup]

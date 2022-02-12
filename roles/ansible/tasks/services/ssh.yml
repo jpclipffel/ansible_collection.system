@@ -26,7 +26,7 @@
         echo -n > "{{ _saun.stdout }}/.ssh/authorized_keys"
       when:
         - "_saun.stdout | length > 0"
-        -    jpclipffel_system_ansible_public_keys_files | length > 2
+        - jpclipffel_system_ansible_public_keys_files | length > 2
           or jpclipffel_system_ansible_public_keys | length > 2
           or jpclipffel_system_ansible_public_keys_git | length > 2
       tags: [never, setup, teardown, remove]
