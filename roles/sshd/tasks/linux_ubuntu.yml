@@ -26,7 +26,7 @@
   service:
     name: "{{ jpclipffel_system_sshd_service }}"
     state: restarted
-    enabled: yes
+    enabled: true
   tags: [never, setup]
 
 - name: Remove SSH server configuration
