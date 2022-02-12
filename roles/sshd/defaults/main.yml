@@ -4,18 +4,18 @@ jpclipffel_system_sshd_package: "openssh-server"
 # SSH server service name
 jpclipffel_system_sshd_service: "sshd"
 
-# Root path of SSH server
+# SSH server cofiguration root path
 jpclipffel_system_sshd_config_root: "/etc/ssh/sshd_config.d"
 
-# Path to SSH server configuration file
-jpclipffel_system_sshd_config_file: "{{ jpclipffel_system_sshd_config_root }}/sshd_config"
+# SSH server configuration file
+jpclipffel_system_sshd_config_file: "{{ jpclipffel_system_sshd_config_root }}/ansible_sshd_config"
 
 # SSH server listening ports
 jpclipffel_system_sshd_ports:
   - 22
 
-# List of host SSH host keys (used to identify the host, not the client).
-# If left empty, the default host keys (automatically generated) are used.
+# SSH server host keys list (identifies the server, not the client).
+# If empty, the default host keys are used.
 #
 # Fields:
 # 'path': Key file path on the Ansible controller

@@ -17,7 +17,7 @@
 
 - name: Install SSH server configuration
   template:
-    src: templates/sshd_config.j2
+    src: "sshd_config-ansible.j2"
     dest: "{{ jpclipffel_system_sshd_config_file }}"
     mode: 0644
   tags: [never, setup]
@@ -28,3 +28,9 @@
     state: restarted
     enabled: yes
   tags: [never, setup]
+
+- name: Remove SSH server configuration
+  file:
+    path: "{{ jpclipffel_system_sshd_config_file }}"
+    state: absent
+  tags: [never, teardown, remove]

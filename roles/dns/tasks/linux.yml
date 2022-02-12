@@ -3,7 +3,7 @@
 
     - name: Stop and disable systemd-resolved
       service:
-        name: systemd-resolved
+        name: "systemd-resolved"
         state: stopped
         enabled: no
 
@@ -14,7 +14,7 @@
 
     - name: Template resolv.conf
       template:
-        src: resolv.conf.j2
+        src: "resolv.conf.j2"
         dest: "{{ jpclipffel_system_dns_resolvconf_file }}"
         mode: 0644
 
@@ -49,13 +49,13 @@
     
     - name: Template systemd-resolved configuration
       template:
-        src: systemd-resolved.conf.j2
+        src: "systemd-resolved.ansible.conf.j2"
         dest: "{{ jpclipffel_system_dns_resolved_file }}"
         mode: 0644
 
     - name: Start and enabled systemd-resolved
       service:
-        name: systemd-resolved
+        name: "systemd-resolved"
         state: restarted
         enabled: yes
 

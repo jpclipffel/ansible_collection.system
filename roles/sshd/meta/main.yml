@@ -1,6 +1,6 @@
 galaxy_info:
   author: Jean-Philippe Clipffel
-  description: Configure hosts SSH server
+  description: Configure the SSH server.
   min_ansible_version: 2.0
   platforms:
     - name: Ubuntu

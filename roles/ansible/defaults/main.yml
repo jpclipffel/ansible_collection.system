@@ -6,7 +6,7 @@ jpclipffel_system_ansible_user_comment: "Ansible user account"
 jpclipffel_system_ansible_user_pwdlock: true
 
 # Sudoers file
-jpclipffel_system_ansible_sudoers_file: "/etc/sudoers.d/{{ jpclipffel_system_ansible_user_name }}"
+jpclipffel_system_ansible_sudoers_file: "/etc/sudoers.d/{{ jpclipffel_system_ansible_user_name }}-ansible"
 
 # Ansible's user account public keys files
 jpclipffel_system_ansible_public_keys_files: []

@@ -9,14 +9,14 @@
 
 - name: Configure unattended-upgrades
   template:
-    src: "templates/unattended-upgrades.j2"
+    src: "51unattended-upgrades-ansible.j2"
     dest: "{{ jpclipffel_system_autoupdate_unattended_upgrades_file }}"
     mode: 0644
   tags: [never, setup]
 
 - name: Configure auto-upgrades
   template:
-    src: "templates/auto-upgrades.j2"
+    src: "21auto-upgrades-ansible.j2"
     dest: "{{ jpclipffel_system_autoupdate_auto_upgrades_file }}"
     mode: 0644
   tags: [never, setup]
@@ -37,6 +37,6 @@
 
 - name: Remove unattended-upgrades
   package:
-    name: unattended-upgrades
+    name: "unattended-upgrades"
     state: absent
   tags: [never, remove]

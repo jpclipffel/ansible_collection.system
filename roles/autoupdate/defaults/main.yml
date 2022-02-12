@@ -1,6 +1,6 @@
 # code: language=Ansible insertSpaces=true tabSize=2
 
 
-# Debian-like auto update configuration files
-jpclipffel_system_autoupdate_unattended_upgrades_file: "/etc/apt/apt.conf.d/50unattended-upgrades"
-jpclipffel_system_autoupdate_auto_upgrades_file: "/etc/apt/apt.conf.d/20unattended-upgrades"
+# APT auto-update & auto-upgrade configuration files
+jpclipffel_system_autoupdate_auto_upgrades_file: "/etc/apt/apt.conf.d/21unattended-upgrades-ansible"
+jpclipffel_system_autoupdate_unattended_upgrades_file: "/etc/apt/apt.conf.d/51unattended-upgrades-ansible"
