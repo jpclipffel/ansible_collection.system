@@ -27,4 +27,7 @@ jobs:
 
       - name: Publish collection
         run: |
-          ansible-galaxy collection publish --api-key ${{ secrets.ANSIBLE_GALAXY_APIKEY }} jpclipffel-system-${{ steps.version.outputs.COLLECTION_VERSION }}.tar.gz
+          ansible-galaxy collection publish \
+            --api-key ${{ secrets.ANSIBLE_GALAXY_APIKEY }} \
+            --import-timeout 60 \
+            jpclipffel-system-${{ steps.version.outputs.COLLECTION_VERSION }}.tar.gz
