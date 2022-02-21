@@ -1,4 +1,4 @@
-# code: language=Ansible insertSpaces=true tabSize=2
+# vim: set ft=Ansible ts=2
 
 
 - include_tasks:

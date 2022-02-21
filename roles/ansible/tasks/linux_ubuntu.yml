@@ -2,23 +2,24 @@
 
 
 - name: Set custom facts
-  set_fact:
+  ansible.builtin.set_fact:
     jpclipffel_system_ansible_pip: "python{{ ansible_python.version.major }}-pip"
   tags: [always]
 
 - name: Setup Ansible user account
-  user:
+  ansible.builtin.user:
     name: "{{ jpclipffel_system_ansible_user_name }}"
     comment: "{{ jpclipffel_system_ansible_user_comment }}"
     state: present
   tags: [never, setup]
 
 - name: Update packages list
-  apt:
+  ansible.builtin.apt:
     update_cache: true
   tags: [never, setup]
 
-- include_tasks:
+- name: Include services tasks
+  ansible.builtin.include_tasks:
     file: "{{ item }}"
   loop:
     - services/ssh.yml
@@ -26,3 +27,9 @@
     - services/pip.yml
     - services/password.yml
   tags: [always]
+
+- name: Install Python dependencies
+  ansible.builtin.pip:
+    name:
+      - python-apt
+  tags: [never, setup]

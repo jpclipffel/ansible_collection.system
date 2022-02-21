@@ -1,3 +1,5 @@
+# vim: set ft=YAML ts=2
+
 galaxy_info:
   author: Jean-Philippe Clipffel
   description: Configure the Ansible account.

@@ -2,12 +2,10 @@
 
 
 - name: Install PIP
-  package:
+  ansible.builtin.package:
     name: "{{ jpclipffel_system_ansible_pip }}"
   register: _install_pip
   until: not _install_pip.failed
   retries: 2
   delay: 10
-  tags:
-    - never
-    - setup
+  tags: [never, setup]
